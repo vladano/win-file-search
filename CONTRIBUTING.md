@@ -30,6 +30,8 @@ The build treats warnings as errors and enforces the code style in `.editorconfi
 5. Update `README.md` if you change something a user can see (options, command line, files on disk).
 6. Fill in the pull request template.
 
+Using an AI assistant is fine (this project itself was built with [Kiro](https://kiro.dev), see the README). You are responsible for the change: make sure you understand it, that it is tested, and that it meets the same bar as hand-written code.
+
 The README section **Adding things** lists the places to touch when adding a search option, a mode, a dialog or a file format change.
 
 ## Code style

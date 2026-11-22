@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/github/license/vladano/win-file-search)](LICENSE)
 ![Platform: Windows 10/11](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6)
 ![.NET 9](https://img.shields.io/badge/.NET-9-512BD4)
+[![Built with Kiro](https://img.shields.io/badge/built%20with-Kiro-7B3FE4)](#how-this-app-was-built)
 
 **Find text inside thousands of files, across a folder and all its subfolders, in seconds.** Windows' built-in search is poor at this. File Search is a free, open-source desktop app for it: plain, Boolean (`AND`/`OR`/`NOT`) or regex search, Word, Excel, PowerPoint and PDF support, and a **Search with File Search** entry in the Explorer right-click menu.
 
@@ -22,7 +23,7 @@
 - **Portable and private.** One exe, settings in `%AppData%`, no network connections, no telemetry.
 - **Free for personal and business use.** [MIT license](LICENSE).
 
-It is an independent project inspired by [Agent Ransack](https://www.mythicsoft.com/agentransack/) (see [Inspiration and disclaimer](#inspiration-and-disclaimer)). Built with C# on .NET 9 and WPF.
+It is an independent project inspired by [Agent Ransack](https://www.mythicsoft.com/agentransack/) (see [Inspiration and disclaimer](#inspiration-and-disclaimer)). Built with C# on .NET 9 and WPF, with the help of the AI development environment [Kiro](https://kiro.dev) (see [How this app was built](#how-this-app-was-built)).
 
 ## Quick start
 
@@ -282,6 +283,32 @@ Ideas not started: first-level Windows 11 context menu (sparse MSIX with `IExplo
 - **A folder is reported as not found.** Check the "Look in" field. Several folders are separated with `;`.
 - **A regular expression or Boolean search shows an error.** The message appears in the Status line of the Summary tab and the status bar.
 - **Files are listed under Skipped.** They are binary, larger than 100 MB (or Office/PDF documents that unpack to more than that), locked, or could not be read. The log file says why for each unreadable file.
+
+## How this app was built
+
+File Search was built with [Kiro](https://kiro.dev), the agentic AI development environment from AWS. The project is a practical example of AI-assisted development: a working, tested Windows desktop app, taken from a few screenshots and a one-paragraph idea to a public release.
+
+**What the maintainer did**
+
+- Defined the problem (searching file contents across folders, which Windows search does poorly) and the target experience, using screenshots of a reference app.
+- Made the product and technical decisions: C# with WPF on .NET 9, a classic Explorer context-menu entry (no admin rights, works on Windows 10 and 11) instead of a packaged Windows 11 extension, the MIT license, and the release approach.
+- Reviewed the plan, the code and the documentation, ran the app, and decided what to keep, change or drop.
+
+**What Kiro did, under that direction**
+
+- Analyzed the reference screenshots and wrote the implementation plan (the phases in [Implementation plan and status](#implementation-plan-and-status)).
+- Wrote the code: the search engine, the WPF interface, single-instance handling, Explorer integration, and Office and PDF text extraction.
+- Wrote the unit tests and ran them after each change. It checked a sample of them by breaking code on purpose and confirming the tests failed.
+- Built and launched the app to check real searches, the single-instance behaviour and the release build, and took the screenshots in `docs/`.
+- Wrote the README, the contributing and security guides, the CI and release workflows, and applied the dependency updates.
+
+**What that means for you**
+
+- AI-generated code is treated like any other contribution: it has to build without warnings, pass the tests and CI, and make sense to a human reviewer. The engine and view models have broad unit-test coverage. The window layout, the Explorer registration and the single-instance pipe are checked by hand (see [Test](#test)).
+- If you find a bug, it is a normal bug. Please [open an issue](https://github.com/vladano/win-file-search/issues/new/choose).
+- Contributions are welcome whether you write the code yourself or with an AI tool, as long as you understand it and it meets the same bar.
+
+Kiro and AWS are trademarks of Amazon.com, Inc. or its affiliates. This project is not affiliated with or endorsed by AWS.
 
 ## Contributing
 

@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/icon.png" alt="File Search icon: a document with a highlighted line under a magnifying glass" width="96" height="96"></p>
+
 # File Search
 
 [![CI](https://github.com/vladano/win-file-search/actions/workflows/ci.yml/badge.svg)](https://github.com/vladano/win-file-search/actions/workflows/ci.yml)
@@ -218,7 +220,8 @@ win-file-search/
 ├─ global.json, Directory.Build.props, Directory.Packages.props, .editorconfig
 │                                 SDK pin, shared build settings (warnings are errors), package versions, code style
 ├─ .github/                       CI and release workflows, Dependabot, issue forms, PR template
-├─ docs/                          screenshot and social preview image used by the README and GitHub
+├─ docs/                          screenshot, icon.png and social preview image used by the README and GitHub
+├─ tools/icon/make-icon.ps1       generates the app icon (Assets/FileSearch.ico) and docs/icon.png
 ├─ LICENSE                        MIT license (with the repository link)
 ├─ THIRD-PARTY-NOTICES.md         licenses of the packages used
 ├─ CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md
@@ -235,6 +238,7 @@ win-file-search/
 │  │   ├─ ReportBuilder.cs        TXT and CSV export
 │  │   └─ Models.cs               FileResult, Hit, SearchProgress, PauseControl
 │  └─ FileSearch.App/             WPF application (assembly name: FileSearch)
+│      ├─ Assets/FileSearch.ico   app icon (exe, windows, taskbar, Explorer context menu)
 │      ├─ App.xaml(.cs)           startup, command line, single instance
 │      ├─ MainWindow.xaml(.cs)    toolbar, search tabs, status bar
 │      ├─ SearchTabView.xaml(.cs) Main / Options / Dates tabs, results list, Summary / Hits / Reports
@@ -254,6 +258,7 @@ win-file-search/
 - **A new mode in a combo box:** add the enum value and its `ModeOption` in `SearchTabViewModel`. `EveryModeHasAnOptionInTheUi` fails if you forget the option. Never store a combo box position in a file.
 - **A new dialog or message:** add it to `IDialogService` and call it from a view model, not from a window.
 - **A change to a saved file format:** bump `CurrentVersion` in `AppSettings` or `SearchDefinition` and convert old values when loading.
+- **A change to the icon:** edit the drawing code in `tools/icon/make-icon.ps1` and run `pwsh -File tools/icon/make-icon.ps1` from the repository root. It rewrites `src/FileSearch.App/Assets/FileSearch.ico` (16 to 256 px; sizes below 32 px are drawn with less detail) and `docs/icon.png`. The exe uses it through `ApplicationIcon`, and the windows through a WPF `Resource` item. `AppIconTests` checks that it is embedded and has every size.
 
 ### How a search runs
 
@@ -272,7 +277,7 @@ win-file-search/
 | 3. Explorer and standalone | Command line, single instance, context menu for folders, backgrounds and drives (registry, no admin) | Done. Registration not yet tried on a real Explorer menu. |
 | 4. Document search | Word, Excel, PowerPoint and PDF text extraction | Done, unit tested (docx, xlsx, pptx and a generated PDF). |
 | 5. Extras | Saved searches, export TXT/CSV, multiple folders, excluded folders | Done. Printing and context lines around a hit are not done. |
-| 6. Packaging | Single-file publish, release workflow | Done: compressed self-contained exe, zip and checksum built by the release workflow on a version tag. Code signing, an installer (Inno Setup or WiX), winget/Scoop packages and an app icon are still to do. |
+| 6. Packaging | Single-file publish, release workflow | Done: compressed self-contained exe, zip and checksum built by the release workflow on a version tag. App icon done (v0.1.1). Code signing, an installer (Inno Setup or WiX) and winget/Scoop packages are still to do. |
 
 Ideas not started: first-level Windows 11 context menu (sparse MSIX with `IExplorerCommand`), printing, lines of context around hits, file type icons in the results list, opening a file at the hit line, an installer.
 

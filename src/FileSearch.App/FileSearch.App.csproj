@@ -6,11 +6,14 @@
     <AssemblyName>FileSearch</AssemblyName>
     <RootNamespace>FileSearch.App</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Icon of the exe: Explorer, taskbar, Start menu and the Explorer context-menu entry ("exe",0).
+         Regenerate with tools/icon/make-icon.ps1. -->
+    <ApplicationIcon>Assets\FileSearch.ico</ApplicationIcon>
   </PropertyGroup>
 
   <!-- Shown in the exe's Properties > Details tab. The release workflow overrides Version from the git tag. -->
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Product>File Search</Product>
     <AssemblyTitle>File Search</AssemblyTitle>
     <Description>Fast file content search for Windows. https://github.com/vladano/win-file-search</Description>
@@ -24,6 +27,11 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <DebugType>none</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The same icon as a WPF resource, for the window title bar and Alt+Tab. -->
+    <Resource Include="Assets\FileSearch.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Using Include="System.IO" />

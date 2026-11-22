@@ -10,7 +10,7 @@ jobs:
     # The app and its tests target net9.0-windows (WPF), so this needs Windows.
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-dotnet@v4
         with:

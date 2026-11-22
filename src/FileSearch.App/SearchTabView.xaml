@@ -1,0 +1,297 @@
+<UserControl x:Class="FileSearch.App.SearchTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:FileSearch.App">
+    <UserControl.Resources>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,3" />
+            <Setter Property="Padding" Value="4,3" />
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ======== criteria ======== -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TabControl x:Name="CriteriaTabs" Grid.Column="0">
+                <!-- Main -->
+                <TabItem Header="Main">
+                    <Grid Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Style="{StaticResource FieldLabel}" Text="File name:" />
+                        <ComboBox x:Name="FileNameBox" Grid.Row="0" Grid.Column="1" IsEditable="True"
+                                  ItemsSource="{Binding Settings.NameHistory}"
+                                  Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
+                            <ToggleButton Style="{StaticResource SmallToggle}" Content="Aa" IsChecked="{Binding NameMatchCase}" />
+                            <Button Style="{StaticResource SmallButton}" Content="?" Command="{Binding ShowHelpCommand}" ToolTip="Search syntax help" />
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="1" Style="{StaticResource FieldLabel}" Text="Containing text:" />
+                        <ComboBox x:Name="ContentBox" Grid.Row="1" Grid.Column="1" IsEditable="True"
+                                  ItemsSource="{Binding Settings.TextHistory}"
+                                  Text="{Binding ContainingText, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                            <ToggleButton Style="{StaticResource SmallToggle}" Content="Aa" IsChecked="{Binding ContentMatchCase}" />
+                            <Button Style="{StaticResource SmallButton}" Content="?" Command="{Binding ShowHelpCommand}" ToolTip="Search syntax help" />
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="2" Style="{StaticResource FieldLabel}" Text="Look in:" />
+                        <ComboBox Grid.Row="2" Grid.Column="1" IsEditable="True"
+                                  ItemsSource="{Binding Settings.FolderHistory}"
+                                  Text="{Binding LookIn, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+                            <CheckBox Content="Subfolders" IsChecked="{Binding Subfolders}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                            <Button Style="{StaticResource SmallButton}" Command="{Binding BrowseCommand}" ToolTip="Browse for folder">
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE838;" Foreground="#F9A825" />
+                            </Button>
+                            <Button Style="{StaticResource SmallButton}" Command="{Binding AddFolderCommand}" ToolTip="Add another folder to search">
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE710;" />
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,4,0,0"
+                                    Visibility="{Binding Ui.IsExpert, Converter={StaticResource BoolToVis}}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Size (kB)" Width="82" />
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="&gt;" />
+                            <TextBox Width="80" Text="{Binding MinSize, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Padding="2,3" />
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="&lt;" Margin="10,0,8,0" />
+                            <TextBox Width="80" Text="{Binding MaxSize, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Padding="2,3" />
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Modified:" Margin="24,0,8,0" />
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="After:" />
+                            <DatePicker Width="140" SelectedDate="{Binding ModifiedAfter.Value}" />
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Before:" Margin="14,0,8,0" />
+                            <DatePicker Width="140" SelectedDate="{Binding ModifiedBefore.Value}" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+                <!-- Options -->
+                <TabItem Header="Options" Visibility="{Binding Ui.IsExpert, Converter={StaticResource BoolToVis}}">
+                    <StackPanel Orientation="Horizontal" Margin="8">
+                        <GroupBox Header="File name" Padding="8" Margin="0,0,10,0" MinWidth="170">
+                            <StackPanel>
+                                <ComboBox ItemsSource="{Binding NameModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding NameMode}" />
+                                <CheckBox Content="Match case" IsChecked="{Binding NameMatchCase}" Margin="0,6,0,0" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Contents" Padding="8" Margin="0,0,10,0" MinWidth="170">
+                            <StackPanel>
+                                <ComboBox ItemsSource="{Binding ContentModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding ContentMode}" />
+                                <CheckBox Content="Match case" IsChecked="{Binding ContentMatchCase}" Margin="0,6,0,0" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Enhanced document searching" Padding="8" Margin="0,0,10,0">
+                            <CheckBox Content="Office/PDF documents" IsChecked="{Binding SearchDocuments}" />
+                        </GroupBox>
+                        <GroupBox Header="Exclude folders (e.g. .git; node_modules)" Padding="8" MinWidth="260">
+                            <TextBox Text="{Binding ExcludeFolders, UpdateSourceTrigger=PropertyChanged}" Padding="2,3" />
+                        </GroupBox>
+                    </StackPanel>
+                </TabItem>
+
+                <!-- Dates -->
+                <TabItem Header="Dates" Visibility="{Binding Ui.IsExpert, Converter={StaticResource BoolToVis}}">
+                    <Grid Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0" Grid.ColumnSpan="2" Content="Clear All" Command="{Binding ClearDatesCommand}"
+                                HorizontalAlignment="Left" Padding="14,2" Margin="0,0,0,8" />
+
+                        <TextBlock Grid.Row="1" Style="{StaticResource FieldLabel}" Text="Modified:" />
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,3">
+                            <CheckBox Content="After:" IsChecked="{Binding ModifiedAfter.Use}" VerticalAlignment="Center" Width="62" />
+                            <DatePicker Width="150" SelectedDate="{Binding ModifiedAfter.Value}" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="20,3,0,3">
+                            <CheckBox Content="Before:" IsChecked="{Binding ModifiedBefore.Use}" VerticalAlignment="Center" Width="62" />
+                            <DatePicker Width="150" SelectedDate="{Binding ModifiedBefore.Value}" />
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="2" Style="{StaticResource FieldLabel}" Text="Created:" />
+                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,3">
+                            <CheckBox Content="After:" IsChecked="{Binding CreatedAfter.Use}" VerticalAlignment="Center" Width="62" />
+                            <DatePicker Width="150" SelectedDate="{Binding CreatedAfter.Value}" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Margin="20,3,0,3">
+                            <CheckBox Content="Before:" IsChecked="{Binding CreatedBefore.Use}" VerticalAlignment="Center" Width="62" />
+                            <DatePicker Width="150" SelectedDate="{Binding CreatedBefore.Value}" />
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="3" Style="{StaticResource FieldLabel}" Text="Last Accessed:" />
+                        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,3">
+                            <CheckBox Content="After:" IsChecked="{Binding AccessedAfter.Use}" VerticalAlignment="Center" Width="62" />
+                            <DatePicker Width="150" SelectedDate="{Binding AccessedAfter.Value}" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" Margin="20,3,0,3">
+                            <CheckBox Content="Before:" IsChecked="{Binding AccessedBefore.Use}" VerticalAlignment="Center" Width="62" />
+                            <DatePicker Width="150" SelectedDate="{Binding AccessedBefore.Value}" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+
+            <StackPanel Grid.Column="1" Width="110" Margin="8,0,0,0">
+                <ComboBox ItemsSource="{Binding Modes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Ui.Mode}" ToolTip="Simple hides the advanced options" />
+                <Button Content="Start" Command="{Binding StartCommand}" IsDefault="True" Margin="0,6,0,0" Padding="0,4" />
+                <Button Content="{Binding IsPaused, Converter={x:Static local:PauseTextConverter.Instance}}"
+                        Command="{Binding PauseCommand}" Margin="0,6,0,0" Padding="0,4" />
+                <Button Content="Stop" Command="{Binding StopCommand}" Margin="0,6,0,0" Padding="0,4" />
+            </StackPanel>
+        </Grid>
+
+        <!-- ======== results ======== -->
+        <Grid Grid.Row="1" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="220" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="1.2*" MinWidth="260" />
+            </Grid.ColumnDefinitions>
+
+            <ListView x:Name="ResultsList" Grid.Column="0"
+                      ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedResult}"
+                      VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
+                      GridViewColumnHeader.Click="ColumnHeader_Click"
+                      MouseDoubleClick="Results_DoubleClick">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Open" Click="OpenFile_Click" />
+                        <MenuItem Header="Open containing folder" Click="OpenFolder_Click" />
+                        <Separator />
+                        <MenuItem Header="Copy full path" Click="CopyPath_Click" />
+                        <MenuItem Header="Copy file name" Click="CopyName_Click" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Location" Width="280" DisplayMemberBinding="{Binding Directory}" />
+                        <GridViewColumn Header="Size" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SizeKb, StringFormat={}{0:N0} KB}" TextAlignment="Right" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Modified" Width="130" DisplayMemberBinding="{Binding Modified, StringFormat=yyyy-MM-dd HH:mm}" />
+                        <GridViewColumn Header="Hits" Width="55" DisplayMemberBinding="{Binding HitCount}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent" />
+
+            <TabControl Grid.Column="2">
+                <TabItem Header="Summary">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Search Statistics" FontWeight="Bold" TextDecorations="Underline" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Found:" Margin="0,3" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FoundText}" Margin="0,3" />
+                            <TextBlock Grid.Row="1" Text="Checked:" Margin="0,3" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CheckedText}" Margin="0,3" />
+                            <TextBlock Grid.Row="2" Text="Skipped:" Margin="0,3"
+                                       Visibility="{Binding SkippedText, Converter={x:Static local:NonEmptyToVisibleConverter.Instance}}" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SkippedText}" Margin="0,3"
+                                       Visibility="{Binding SkippedText, Converter={x:Static local:NonEmptyToVisibleConverter.Instance}}" />
+                            <TextBlock Grid.Row="3" Text="Status:" Margin="0,3" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding StatusText}" Margin="0,3" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsError}" Value="True">
+                                                <Setter Property="Foreground" Value="#C62828" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Hits">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Margin="8,6" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                   Text="{Binding SelectedResult.FullPath}" ToolTip="{Binding SelectedResult.FullPath}" />
+                        <ListBox x:Name="HitsList" ItemsSource="{Binding SelectedResult.Hits}" BorderThickness="0,1,0,0"
+                                 HorizontalContentAlignment="Stretch" MouseDoubleClick="Hits_DoubleClick"
+                                 VirtualizingPanel.IsVirtualizing="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding LineNumber}" TextAlignment="Right" Foreground="Gray" Margin="0,0,10,0"
+                                                   FontFamily="Consolas" />
+                                        <local:HitTextBlock Grid.Column="1" Hit="{Binding}" FontFamily="Consolas" TextTrimming="CharacterEllipsis" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem Header="Reports">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="6">
+                            <Button Content="Export..." Padding="12,3" Command="{Binding ExportCommand}" />
+                            <Button Content="Copy" Padding="12,3" Margin="6,0,0,0" Click="CopyReport_Click" />
+                        </StackPanel>
+                        <TextBox Text="{Binding ReportText, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas"
+                                 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" BorderThickness="0,1,0,0" />
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>

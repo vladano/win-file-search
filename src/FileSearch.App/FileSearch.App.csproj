@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
@@ -9,17 +8,31 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
+  <!-- Shown in the exe's Properties > Details tab. The release workflow overrides Version from the git tag. -->
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Product>File Search</Product>
+    <AssemblyTitle>File Search</AssemblyTitle>
+    <Description>Fast file content search for Windows. https://github.com/vladano/win-file-search</Description>
+    <Company>vladano</Company>
+    <Copyright>Copyright (c) 2026 vladano. MIT License. https://github.com/vladano/win-file-search</Copyright>
+  </PropertyGroup>
+
+  <!-- Single-file publish: compress the bundle (roughly halves the size) and keep native WPF libraries inside it. -->
+  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <Using Include="System.IO" />
     <InternalsVisibleTo Include="FileSearch.App.Tests" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\FileSearch.Core\FileSearch.Core.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
-
 </Project>

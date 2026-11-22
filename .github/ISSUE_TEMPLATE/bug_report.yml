@@ -1,0 +1,43 @@
+name: Bug report
+description: Something does not work as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for reporting. Please check the [existing issues](https://github.com/vladano/win-file-search/issues) first.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: search
+    attributes:
+      label: The search
+      description: File name, Containing text, Look in, and any options (Boolean/regex mode, match case, size or date filters).
+      placeholder: |
+        File name: *.prg
+        Containing text: ALIAS AND select
+        Mode: Boolean, match case off
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: Right-click FileSearch.exe > Properties > Details > Product version.
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: Contents of `%AppData%\FileSearch\logs\filesearch.log`, if it has entries. Remove anything private first.
+      render: text

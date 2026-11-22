@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <!-- Application -->
-    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageVersion Include="PdfPig" Version="0.1.9" />
 
     <!-- Tests -->

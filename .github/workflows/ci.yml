@@ -1,33 +1,28 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
-
+permissions:
+  contents: read
 jobs:
   build-and-test:
     # The app and its tests target net9.0-windows (WPF), so this needs Windows.
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
-
       - name: Restore
         run: dotnet restore FileSearch.sln
-
       - name: Build
         run: dotnet build FileSearch.sln -c Release --no-restore
-
       - name: Test
         run: dotnet test FileSearch.sln -c Release --no-build --logger "trx;LogFileName=results.trx"
-
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results
           path: "**/TestResults/*.trx"

@@ -1,12 +1,20 @@
 version: 2
 updates:
+  # Grouped so updates arrive as one pull request per ecosystem instead of one per package.
   - package-ecosystem: nuget
     directory: "/"
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
-
+    groups:
+      test-tools:
+        patterns: ["xunit*", "Microsoft.NET.Test.Sdk", "coverlet*"]
+      app-packages:
+        patterns: ["*"]
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

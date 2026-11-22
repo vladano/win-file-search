@@ -1,12 +1,36 @@
 # File Search
 
-A fast Windows desktop tool for searching the **contents of many files across a folder and all its subfolders**. Windows' built-in search is poor at this, so this app is an independent project inspired by [Agent Ransack](https://www.mythicsoft.com/agentransack/) (see [Inspiration and disclaimer](#inspiration-and-disclaimer)).
+[![CI](https://github.com/vladano/win-file-search/actions/workflows/ci.yml/badge.svg)](https://github.com/vladano/win-file-search/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/vladano/win-file-search?sort=semver)](https://github.com/vladano/win-file-search/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/vladano/win-file-search/total)](https://github.com/vladano/win-file-search/releases)
+[![License: MIT](https://img.shields.io/github/license/vladano/win-file-search)](LICENSE)
+![Platform: Windows 10/11](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6)
+![.NET 9](https://img.shields.io/badge/.NET-9-512BD4)
+[![Built with Kiro](https://img.shields.io/badge/built%20with-Kiro-7B3FE4)](#how-this-app-was-built)
 
-It runs as a standalone app, or from the Explorer right-click menu ("Search with File Search") on any folder, folder background or drive.
+**Find text inside thousands of files, across a folder and all its subfolders, in seconds.** Windows' built-in search is poor at this. File Search is a free, open-source desktop app for it: plain, Boolean (`AND`/`OR`/`NOT`) or regex search, Word, Excel, PowerPoint and PDF support, and a **Search with File Search** entry in the Explorer right-click menu.
 
-- Platform: Windows 10 / 11 (x64)
-- Language: C# on .NET 9, WPF (MVVM)
-- License: [MIT](LICENSE). Free for personal and business use, as long as the license notice (with the link to this repository) stays with copies.
+**[⬇ Download the latest release](https://github.com/vladano/win-file-search/releases/latest)**: one portable `FileSearch.exe`, no installer, no .NET install needed. Windows 10 and 11, x64.
+
+![File Search showing results for a search across a source folder, with the matching lines highlighted in the Hits tab](docs/screenshot.png)
+
+### Why File Search
+
+- **Searches content, not just names.** Every matching line is listed with its line number and the match highlighted.
+- **Real queries.** `alias AND (select OR use) NOT "for test"`, regular expressions, wildcards for file names, size and date filters, folder exclusions.
+- **Office and PDF files included.** No IFilters or Windows Search index needed.
+- **Right where you are.** Right-click any folder, folder background or drive in Explorer.
+- **Portable and private.** One exe, settings in `%AppData%`, no network connections, no telemetry.
+- **Free for personal and business use.** [MIT license](LICENSE).
+
+It is an independent project inspired by [Agent Ransack](https://www.mythicsoft.com/agentransack/) (see [Inspiration and disclaimer](#inspiration-and-disclaimer)). Built with C# on .NET 9 and WPF, with the help of the AI development environment [Kiro](https://kiro.dev) (see [How this app was built](#how-this-app-was-built)).
+
+## Quick start
+
+1. Download `FileSearch-<version>-win-x64.zip` from [Releases](https://github.com/vladano/win-file-search/releases/latest) and unzip it, for example to `C:\Tools\FileSearch`.
+2. Run `FileSearch.exe`. The exe is not code-signed yet, so Windows SmartScreen may warn the first time. Click **More info > Run anyway**.
+3. Optional: **Tools > Add to Explorer context menu**. On Windows 11 the entry is under **Show more options**.
+4. Enter a file name pattern (for example `*.cs;*.sql`), the text to find and a folder, then press **Start** (or F5).
 
 ## Features
 
@@ -118,11 +142,32 @@ dotnet test FileSearch.sln --collect:"XPlat Code Coverage"
 
 ### Portable (single file)
 
+The easiest way is the zip on the [Releases](https://github.com/vladano/win-file-search/releases/latest) page. It contains `FileSearch.exe` (about 60 MB, self-contained), `LICENSE`, `THIRD-PARTY-NOTICES.md` and this README. A `.sha256` file next to it lets you check the download:
+
+```powershell
+Get-FileHash .\FileSearch-0.1.0-win-x64.zip -Algorithm SHA256
+```
+
+To build the same exe yourself:
+
 ```powershell
 dotnet publish src/FileSearch.App -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish
 ```
 
 Copy `publish\FileSearch.exe` anywhere, for example `C:\Tools\FileSearch\`, and run it. When you share it, include `LICENSE` and `THIRD-PARTY-NOTICES.md` next to the exe.
+
+### Making a release (maintainers)
+
+Releases are built by `.github/workflows/release.yml` when a version tag is pushed:
+
+```powershell
+git switch main
+git pull
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The workflow runs the tests, publishes the single-file exe with the tag's version, zips it with the license files, and creates the GitHub release with a checksum and generated notes. The text at the top of the notes comes from `.github/release-notes.md`.
 
 ### Explorer context menu
 
@@ -172,9 +217,12 @@ win-file-search/
 ├─ FileSearch.sln
 ├─ global.json, Directory.Build.props, Directory.Packages.props, .editorconfig
 │                                 SDK pin, shared build settings (warnings are errors), package versions, code style
-├─ .github/                       CI workflow (build + test on Windows) and Dependabot
+├─ .github/                       CI and release workflows, Dependabot, issue forms, PR template
+├─ docs/                          screenshot and social preview image used by the README and GitHub
 ├─ LICENSE                        MIT license (with the repository link)
 ├─ THIRD-PARTY-NOTICES.md         licenses of the packages used
+├─ CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md
+│                                 how to contribute, community rules, how to report security problems
 ├─ src/
 │  ├─ FileSearch.Core/            UI-free search engine (class library)
 │  │   ├─ SearchCriteria.cs       what to search: folders, name, text, modes, size, dates
@@ -224,7 +272,7 @@ win-file-search/
 | 3. Explorer and standalone | Command line, single instance, context menu for folders, backgrounds and drives (registry, no admin) | Done. Registration not yet tried on a real Explorer menu. |
 | 4. Document search | Word, Excel, PowerPoint and PDF text extraction | Done, unit tested (docx, xlsx, pptx and a generated PDF). |
 | 5. Extras | Saved searches, export TXT/CSV, multiple folders, excluded folders | Done. Printing and context lines around a hit are not done. |
-| 6. Packaging | Single-file publish | Command documented above. Installer (Inno Setup or WiX) and app icon are still to do. |
+| 6. Packaging | Single-file publish, release workflow | Done: compressed self-contained exe, zip and checksum built by the release workflow on a version tag. Code signing, an installer (Inno Setup or WiX), winget/Scoop packages and an app icon are still to do. |
 
 Ideas not started: first-level Windows 11 context menu (sparse MSIX with `IExplorerCommand`), printing, lines of context around hits, file type icons in the results list, opening a file at the hit line, an installer.
 
@@ -236,9 +284,39 @@ Ideas not started: first-level Windows 11 context menu (sparse MSIX with `IExplo
 - **A regular expression or Boolean search shows an error.** The message appears in the Status line of the Summary tab and the status bar.
 - **Files are listed under Skipped.** They are binary, larger than 100 MB (or Office/PDF documents that unpack to more than that), locked, or could not be read. The log file says why for each unreadable file.
 
+## How this app was built
+
+File Search was built with [Kiro](https://kiro.dev), the agentic AI development environment from AWS. The project is a practical example of AI-assisted development: a working, tested Windows desktop app, taken from a few screenshots and a one-paragraph idea to a public release.
+
+**What the maintainer did**
+
+- Defined the problem (searching file contents across folders, which Windows search does poorly) and the target experience, using screenshots of a reference app.
+- Made the product and technical decisions: C# with WPF on .NET 9, a classic Explorer context-menu entry (no admin rights, works on Windows 10 and 11) instead of a packaged Windows 11 extension, the MIT license, and the release approach.
+- Reviewed the plan, the code and the documentation, ran the app, and decided what to keep, change or drop.
+
+**What Kiro did, under that direction**
+
+- Analyzed the reference screenshots and wrote the implementation plan (the phases in [Implementation plan and status](#implementation-plan-and-status)).
+- Wrote the code: the search engine, the WPF interface, single-instance handling, Explorer integration, and Office and PDF text extraction.
+- Wrote the unit tests and ran them after each change. It checked a sample of them by breaking code on purpose and confirming the tests failed.
+- Built and launched the app to check real searches, the single-instance behaviour and the release build, and took the screenshots in `docs/`.
+- Wrote the README, the contributing and security guides, the CI and release workflows, and applied the dependency updates.
+
+**What that means for you**
+
+- AI-generated code is treated like any other contribution: it has to build without warnings, pass the tests and CI, and make sense to a human reviewer. The engine and view models have broad unit-test coverage. The window layout, the Explorer registration and the single-instance pipe are checked by hand (see [Test](#test)).
+- If you find a bug, it is a normal bug. Please [open an issue](https://github.com/vladano/win-file-search/issues/new/choose).
+- Contributions are welcome whether you write the code yourself or with an AI tool, as long as you understand it and it meets the same bar.
+
+Kiro and AWS are trademarks of Amazon.com, Inc. or its affiliates. This project is not affiliated with or endorsed by AWS.
+
+## Contributing
+
+Bug reports, ideas and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to build, test and submit changes, and [SECURITY.md](SECURITY.md) for reporting security problems privately. If File Search saves you time, a ⭐ on GitHub helps other people find it.
+
 ## License
 
-File Search is released under the [MIT License](LICENSE). You may use, copy, modify and distribute it freely, for personal and commercial use. The only condition is that the license notice, which includes the link to <https://github.com/vladano/win-file-search>, stays with copies and substantial portions of the software (including redistributed binaries).
+File Search is released under the [MIT License](LICENSE). You may use, copy, modify and distribute it freely, for personal and commercial use. The only condition is that the copyright and license notice, which includes the link to <https://github.com/vladano/win-file-search>, stays with copies and substantial portions of the software (including redistributed binaries).
 
 Third-party packages keep their own licenses. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 

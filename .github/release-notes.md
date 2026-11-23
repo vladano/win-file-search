@@ -10,4 +10,6 @@ To add **Search with File Search** to the Explorer right-click menu, open the ap
 Get-FileHash .\FileSearch-<version>-win-x64.zip -Algorithm SHA256
 ```
 
+New to File Search? The zip includes `USER-MANUAL.md`, also readable [online](https://github.com/vladano/win-file-search/blob/main/docs/USER-MANUAL.md).
+
 Found a bug? [Open an issue](https://github.com/vladano/win-file-search/issues/new/choose) and attach `%AppData%\FileSearch\logs\filesearch.log`.

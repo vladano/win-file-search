@@ -40,7 +40,8 @@ jobs:
         run: |
           $name = "FileSearch-${{ steps.ver.outputs.version }}-win-x64"
           New-Item -ItemType Directory $name | Out-Null
-          Copy-Item publish/FileSearch.exe, LICENSE, THIRD-PARTY-NOTICES.md, README.md $name
+          # The manual links to screenshot.png next to it, so ship both to keep it readable offline.
+          Copy-Item publish/FileSearch.exe, LICENSE, THIRD-PARTY-NOTICES.md, README.md, docs/USER-MANUAL.md, docs/screenshot.png $name
           Compress-Archive -Path "$name/*" -DestinationPath "$name.zip"
           $hash = (Get-FileHash "$name.zip" -Algorithm SHA256).Hash.ToLower()
           "$hash  $name.zip" | Set-Content "$name.zip.sha256" -Encoding ascii

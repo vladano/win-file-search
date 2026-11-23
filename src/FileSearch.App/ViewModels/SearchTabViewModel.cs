@@ -5,6 +5,9 @@ using FileSearch.Core;
 
 namespace FileSearch.App.ViewModels;
 
+/// <summary>Tabs of the details pane, in the order they appear in SearchTabView.xaml.</summary>
+public enum DetailTab { Summary = 0, Hits = 1, Reports = 2 }
+
 public partial class SearchTabViewModel : ObservableObject, IDisposable
 {
     public const string NewSearchTitle = "New search";
@@ -79,7 +82,22 @@ public partial class SearchTabViewModel : ObservableObject, IDisposable
     [ObservableProperty] private string _reportText = "";
     [ObservableProperty] private ResultItem? _selectedResult;
 
+    /// <summary>Selected tab in the details pane (Summary, Hits, Reports). Bound to the TabControl's SelectedIndex.</summary>
+    [ObservableProperty] private int _selectedDetailTab = (int)DetailTab.Summary;
+
     public BulkObservableCollection<ResultItem> Results { get; } = [];
+
+    partial void OnSelectedResultChanged(ResultItem? value) => ShowHitsOfSelectedResult();
+
+    /// <summary>
+    /// Switches the details pane to the Hits tab when the selected file has matching lines. Called when the
+    /// selection changes and when the user clicks a result again, so the content is always one click away.
+    /// Files without hits (name-only or NOT searches) leave the current tab alone, since Hits would be empty.
+    /// </summary>
+    public void ShowHitsOfSelectedResult()
+    {
+        if (SelectedResult is { HitCount: > 0 }) SelectedDetailTab = (int)DetailTab.Hits;
+    }
 
     /// <summary>True while the tab is untouched, so a command-line request can reuse it.</summary>
     public bool IsPristine => !HasSearched && string.IsNullOrEmpty(ContainingText) && string.IsNullOrEmpty(LookIn);

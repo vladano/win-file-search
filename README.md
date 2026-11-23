@@ -12,7 +12,7 @@
 
 **Find text inside thousands of files, across a folder and all its subfolders, in seconds.** Windows' built-in search is poor at this. File Search is a free, open-source desktop app for it: plain, Boolean (`AND`/`OR`/`NOT`) or regex search, Word, Excel, PowerPoint and PDF support, and a **Search with File Search** entry in the Explorer right-click menu.
 
-**[⬇ Download the latest release](https://github.com/vladano/win-file-search/releases/latest)**: one portable `FileSearch.exe`, no installer, no .NET install needed. Windows 10 and 11, x64.
+**[⬇ Download the latest release](https://github.com/vladano/win-file-search/releases/latest)**: one portable `FileSearch.exe`, no installer, no .NET install needed. Windows 10 and 11, x64. **[📖 User manual](docs/USER-MANUAL.md)**
 
 ![File Search showing results for a search across a source folder, with the matching lines highlighted in the Hits tab](docs/screenshot.png)
 
@@ -34,6 +34,19 @@ It is an independent project inspired by [Agent Ransack](https://www.mythicsoft.
 3. Optional: **Tools > Add to Explorer context menu**. On Windows 11 the entry is under **Show more options**.
 4. Enter a file name pattern (for example `*.cs;*.sql`), the text to find and a folder, then press **Start** (or F5).
 
+## User manual
+
+The **[User manual](docs/USER-MANUAL.md)** explains everything step by step, for people who just want to use the app:
+
+- [installing](docs/USER-MANUAL.md#1-install), [updating and uninstalling](docs/USER-MANUAL.md#14-update-and-uninstall)
+- [adding **Search with File Search** to the Explorer right-click menu](docs/USER-MANUAL.md#2-add-file-search-to-the-explorer-right-click-menu), including Windows 11's **Show more options**
+- [a first search](docs/USER-MANUAL.md#3-your-first-search) and [every field of the search form](docs/USER-MANUAL.md#5-the-search-form)
+- [writing searches](docs/USER-MANUAL.md#6-writing-searches-file-names-and-text): wildcards, Boolean `AND`/`OR`/`NOT` and regular expressions, with examples
+- [working with results](docs/USER-MANUAL.md#7-working-with-the-results), [saving searches and exporting](docs/USER-MANUAL.md#9-saving-searches-and-exporting-results), [the command line](docs/USER-MANUAL.md#10-starting-file-search-from-the-command-line) and [keyboard shortcuts](docs/USER-MANUAL.md#11-keyboard-shortcuts)
+- [what is searched and what is skipped](docs/USER-MANUAL.md#12-what-gets-searched-and-what-is-skipped), [where settings are kept](docs/USER-MANUAL.md#13-settings-history-and-the-log-file) and [troubleshooting](docs/USER-MANUAL.md#15-troubleshooting)
+
+The manual is also included in the release zip as `USER-MANUAL.md`. The rest of this README is aimed at developers.
+
 ## Features
 
 | Area | What it does |
@@ -43,11 +56,12 @@ It is an independent project inspired by [Agent Ransack](https://www.mythicsoft.
 | Look in | One or more folders (separate with `;`), with or without subfolders. Folder history is remembered. |
 | Filters | Size (greater / less than, in kB). Modified, Created and Last Accessed date ranges. Folder exclusions such as `.git; node_modules`. |
 | Documents | Searches inside Word, Excel and PowerPoint (`.docx/.xlsx/.pptx` and macro variants) and PDF files. |
-| Results | Name, Location, Size, Modified and Hits columns (click a header to sort). Summary, Hits (matched text highlighted) and Reports tabs. |
+| Results | Name, Location, Size, Modified and Hits columns (click a header to sort). Summary, Hits (matched text highlighted) and Reports tabs. Selecting or clicking a file that contains the search text opens its Hits automatically. |
 | Control | Start, Pause / Resume and Stop. Several searches at once in tabs. |
 | Files | Save and open search definitions (`.fsearch`). Export results to TXT or CSV. |
 | Modes | Simple hides the advanced options (Size, Dates, Options tabs). Expert shows everything. |
 | Explorer | Right-click a folder, the background of a folder, or a drive to start a search there. |
+| About | Version, license and links to this repository, the user manual, new releases and the issue tracker. **Copy details** copies version information for bug reports. |
 
 Notes:
 
@@ -144,7 +158,7 @@ dotnet test FileSearch.sln --collect:"XPlat Code Coverage"
 
 ### Portable (single file)
 
-The easiest way is the zip on the [Releases](https://github.com/vladano/win-file-search/releases/latest) page. It contains `FileSearch.exe` (about 60 MB, self-contained), `LICENSE`, `THIRD-PARTY-NOTICES.md` and this README. A `.sha256` file next to it lets you check the download:
+The easiest way is the zip on the [Releases](https://github.com/vladano/win-file-search/releases/latest) page. It contains `FileSearch.exe` (about 60 MB, self-contained), `USER-MANUAL.md` (with `screenshot.png`), `LICENSE`, `THIRD-PARTY-NOTICES.md` and this README. A `.sha256` file next to it lets you check the download:
 
 ```powershell
 Get-FileHash .\FileSearch-0.1.0-win-x64.zip -Algorithm SHA256
@@ -220,7 +234,8 @@ win-file-search/
 ├─ global.json, Directory.Build.props, Directory.Packages.props, .editorconfig
 │                                 SDK pin, shared build settings (warnings are errors), package versions, code style
 ├─ .github/                       CI and release workflows, Dependabot, issue forms, PR template
-├─ docs/                          screenshot, icon.png and social preview image used by the README and GitHub
+├─ docs/                          USER-MANUAL.md, plus the screenshot, icon.png and social preview image used by
+│                                 the README, the manual and GitHub
 ├─ tools/icon/make-icon.ps1       generates the app icon (Assets/FileSearch.ico) and docs/icon.png
 ├─ LICENSE                        MIT license (with the repository link)
 ├─ THIRD-PARTY-NOTICES.md         licenses of the packages used
@@ -241,6 +256,7 @@ win-file-search/
 │      ├─ Assets/FileSearch.ico   app icon (exe, windows, taskbar, Explorer context menu)
 │      ├─ App.xaml(.cs)           startup, command line, single instance
 │      ├─ MainWindow.xaml(.cs)    toolbar, search tabs, status bar
+│      ├─ AboutWindow.xaml(.cs)   About dialog (version, license, project links); data from Services/AppInfo.cs
 │      ├─ SearchTabView.xaml(.cs) Main / Options / Dates tabs, results list, Summary / Hits / Reports
 │      ├─ HitTextBlock.cs         text block that highlights matched ranges
 │      ├─ ViewModels/             MainViewModel (tabs, dialog flows), SearchTabViewModel (form and results),

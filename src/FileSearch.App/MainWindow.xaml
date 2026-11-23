@@ -53,6 +53,13 @@
                         <MenuItem Header="Search syntax help" Click="Help_Click" />
                     </MenuItem>
                 </Menu>
+                <Button Click="About_Click" ToolTip="About File Search: version, source code, user manual, license"
+                        AutomationProperties.Name="About">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource Glyph}" Text="&#xE946;" Foreground="#1565C0" Margin="0,0,4,0" />
+                        <TextBlock Text="About" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
             </ToolBar>
         </ToolBarTray>
 

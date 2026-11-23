@@ -139,6 +139,7 @@ To find files by name only, leave **Containing text** empty. To search every fil
 | ⏸ Pause | Pauses the running search; click again to resume |
 | ■ Stop | Stops the search; results found so far stay in the list |
 | **Tools** | Add or remove the Explorer context-menu entry, and open the search syntax help |
+| ⓘ **About** | Shows the version and license, with links to the source code on GitHub, this manual, new versions and the issue tracker. **Copy details** copies the version and Windows details for a bug report. |
 
 The **Start**, **Pause** and **Stop** buttons are also to the right of the search form. Pause and Stop are only available while a search is running.
 
@@ -413,7 +414,7 @@ File Search keeps its files in `%AppData%\FileSearch`. Paste that into the Explo
 
 Settings and history are kept. If you put the new version in a **different** folder, choose **Tools > Add to Explorer context menu** again so the right-click entry points to it.
 
-To see which version you have: right-click `FileSearch.exe` > **Properties** > **Details** > **Product version**.
+To see which version you have, click **About** in the toolbar. **Check for a newer version** there opens the latest release. (Without starting the app: right-click `FileSearch.exe` > **Properties** > **Details** > **Product version**.)
 
 ### Uninstall
 
@@ -437,7 +438,7 @@ File Search does not install anything else.
 | **Word or PDF files are not found** | Tick **Options > Office/PDF documents**. Old `.doc`/`.xls` files and scanned PDFs have no readable text. |
 | **The search is slow** | Narrow **File name** (`*.cs` instead of `*`), add **Exclude folders** such as `node_modules; .git; bin; obj`, or untick **Office/PDF documents**. Network drives are slower than local disks. |
 | **The old icon is still shown after an update** | Windows caches icons. Unpin and re-pin the app, or sign out and in again. |
-| **Something else went wrong** | Look in `%AppData%\FileSearch\logs\filesearch.log`, and [open an issue](https://github.com/vladano/win-file-search/issues/new/choose) with the steps, your Windows version, the File Search version and the log. |
+| **Something else went wrong** | Look in `%AppData%\FileSearch\logs\filesearch.log`, and [open an issue](https://github.com/vladano/win-file-search/issues/new/choose) (**About > Report a problem**) with the steps and the log. Click **About > Copy details** and paste them into the issue: they contain the File Search, Windows and .NET versions. |
 
 ---
 

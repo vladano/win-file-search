@@ -61,6 +61,7 @@ The manual is also included in the release zip as `USER-MANUAL.md`. The rest of 
 | Files | Save and open search definitions (`.fsearch`). Export results to TXT or CSV. |
 | Modes | Simple hides the advanced options (Size, Dates, Options tabs). Expert shows everything. |
 | Explorer | Right-click a folder, the background of a folder, or a drive to start a search there. |
+| About | Version, license and links to this repository, the user manual, new releases and the issue tracker. **Copy details** copies version information for bug reports. |
 
 Notes:
 
@@ -255,6 +256,7 @@ win-file-search/
 │      ├─ Assets/FileSearch.ico   app icon (exe, windows, taskbar, Explorer context menu)
 │      ├─ App.xaml(.cs)           startup, command line, single instance
 │      ├─ MainWindow.xaml(.cs)    toolbar, search tabs, status bar
+│      ├─ AboutWindow.xaml(.cs)   About dialog (version, license, project links); data from Services/AppInfo.cs
 │      ├─ SearchTabView.xaml(.cs) Main / Options / Dates tabs, results list, Summary / Hits / Reports
 │      ├─ HitTextBlock.cs         text block that highlights matched ranges
 │      ├─ ViewModels/             MainViewModel (tabs, dialog flows), SearchTabViewModel (form and results),

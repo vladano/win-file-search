@@ -63,6 +63,9 @@ public partial class MainWindow : Window
 
     private void Help_Click(object sender, RoutedEventArgs e) => Vm.ShowHelp();
 
+    private void About_Click(object sender, RoutedEventArgs e) =>
+        new AboutWindow(AppInfo.FromAssembly(typeof(App).Assembly)) { Owner = this }.ShowDialog();
+
     private void InstallShell_Click(object sender, RoutedEventArgs e)
     {
         const string title = "Explorer context menu";

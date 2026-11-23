@@ -2,7 +2,7 @@
 
 File Search finds text inside files: every file in a folder and its subfolders that contains what you are looking for, with the matching lines listed and highlighted. This manual explains how to install it, add it to the Explorer right-click menu, and use every part of the window.
 
-Applies to File Search 0.1.1 and later, on Windows 10 and Windows 11 (64-bit).
+Applies to File Search 0.1.2 and later, on Windows 10 and Windows 11 (64-bit).
 
 ![The File Search window: search form at the top, found files on the left, the matching lines of the selected file on the right](screenshot.png)
 

@@ -189,6 +189,7 @@
                       ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedResult}"
                       VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
                       GridViewColumnHeader.Click="ColumnHeader_Click"
+                      PreviewMouseLeftButtonUp="Results_Click"
                       MouseDoubleClick="Results_DoubleClick">
                 <ListView.ContextMenu>
                     <ContextMenu>
@@ -218,7 +219,8 @@
 
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent" />
 
-            <TabControl Grid.Column="2">
+            <!-- Tab order must match the DetailTab enum. Selecting a result with hits switches to Hits. -->
+            <TabControl Grid.Column="2" SelectedIndex="{Binding SelectedDetailTab}">
                 <TabItem Header="Summary">
                     <StackPanel Margin="10">
                         <TextBlock Text="Search Statistics" FontWeight="Bold" TextDecorations="Underline" Margin="0,0,0,12" />

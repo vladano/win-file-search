@@ -66,6 +66,14 @@ public partial class SearchTabView : UserControl
 
     private ResultItem? Current => ResultsList.SelectedItem as ResultItem;
 
+    // A click on a row that is already selected does not change the selection, so switch to Hits here too
+    // (for example after the user looked at Summary or Reports). Clicks on the header or empty space are ignored.
+    private void Results_Click(object sender, MouseButtonEventArgs e)
+    {
+        if (e.OriginalSource is DependencyObject d && ItemsControl.ContainerFromElement(ResultsList, d) is ListViewItem)
+            Vm?.ShowHitsOfSelectedResult();
+    }
+
     private void Results_DoubleClick(object sender, MouseButtonEventArgs e)
     {
         // Ignore double-clicks on the header or empty space.

@@ -118,13 +118,13 @@ To find files by name only, leave **Containing text** empty. To search every fil
 
 ```text
 ┌ Toolbar: New · Open · Save · Export │ Start · Pause · Stop │ Tools ───────────────────────┐
-├ Search tabs:  [customer_id ×] [TODO ×] ...                                              ┤
-├ Search form:  Main | Options | Dates                              [Simple/Expert] Start  ┤
-│               File name / Containing text / Look in / Size / Modified          Pause   │
-│                                                                                 Stop    │
-├ Results list (left)                    │ Details (right): Summary | Hits | Reports      ┤
-│ Name · Location · Size · Modified · Hits│                                                │
-└ Status bar: progress or "Finished in 1.2 s"                               "6 results"  ┘
+├ Search tabs:  [customer_id ×] [TODO ×] ...                                                ┤
+├ Search form:  Main | Options | Dates                              [Simple/Expert] Start   ┤
+│               File name / Containing text / Look in / Size / Modified             Pause   │
+│                                                                                   Stop    │
+├ Results list (left)                     │ Details (right): Summary | Hits | Reports       ┤
+│ Name · Location · Size · Modified · Hits│                                                 │
+└ Status bar: progress or "Finished in 1.2 s"                               "6 results"     ┘
 ```
 
 **Toolbar**
